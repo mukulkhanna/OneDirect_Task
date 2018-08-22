@@ -1,0 +1,4 @@
+./data.js
+data.js
+*.env
+node_modules
