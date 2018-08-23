@@ -242,7 +242,7 @@ export default {
     },
     alterTo () {
       console.log(this.from.slice(0,-6))
-      axios.post('https://localhost:3000/correspondingDestinations',{
+      axios.post('/correspondingDestinations',{
         origin: this.from.slice(0,-6)
       }).then((res) => {
         this.destinations = res.data
@@ -275,7 +275,7 @@ export default {
       } else {
         console.log(this.from.slice(0,-6))
         console.log(this.to.slice(0,-6))
-        axios.post('https://localhost:3000/flights', {
+        axios.post('/flights', {
           origin: this.from.slice(0,-6),
           destination: this.to.slice(0,-6)
         }).then((res) => {
@@ -295,7 +295,7 @@ export default {
     }
   },
   created () {
-    axios.get('https://localhost:3000/airports').then((res) => {
+    axios.get('/airports').then((res) => {
       console.log(res.data)
       this.origins = res.data.origins.sort()
       this.destinations = res.data.destinations.sort()
