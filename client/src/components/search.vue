@@ -18,7 +18,7 @@
               <v-autocomplete
                 v-model="from"
                 :items="origins"
-                persistent-hint
+                hint="Choose origin of journey"
                 color="main"
                 label="From"
                 v-on:input="alterTo()"
@@ -42,9 +42,9 @@
             <v-flex xs5 sm4 md3>
               <v-autocomplete
                 color="main"
+                hint="Choose destination of journey"
                 v-model="to"
                 :items="destinations"
-                persistent-hint
                 label="To"
                 append-icon="place"
                 solo
@@ -124,13 +124,13 @@
           <v-container v-if="results.length > 0">
             <v-list three-line subheader>
               <v-list-tile v-for="result in results" :key="result.id" class="border1 mb-2 white">
-                <v-list-tile-avatar style="margin-top:1px" class="ml-3" size="50">
+                <v-list-tile-avatar v-if="!mobile" style="margin-top:1px" class="ml-3" size="50">
                   <img :src="result.image">
                 </v-list-tile-avatar>
                 <v-layout>
-                  <v-flex xs2>
+                  <v-flex xs3 md2>
                     <v-layout column>
-                      <v-flex font-weight-bold>
+                      <v-flex font-weight-bold >
                         {{result.name}}
                       </v-flex>
                       <v-flex>
@@ -138,10 +138,13 @@
                       </v-flex>
                     </v-layout>
                   </v-flex>
-                  <v-flex xs2>
+                  <v-flex xs3 md2>
                     <v-layout column>
-                      <v-flex font-weight-bold>
+                      <v-flex font-weight-bold v-if="!mobile">
                         {{result.origin}}
+                      </v-flex>
+                      <v-flex font-weight-bold v-else>
+                        {{result.ocode}}
                       </v-flex>
                       <v-flex>
                         {{momenty(result.departure)}}
@@ -150,21 +153,24 @@
                   </v-flex>
                   <v-flex xs2>
                     <v-layout column>
-                      <v-flex font-weight-bold>
+                      <v-flex font-weight-bold v-if="!mobile">
                         {{result.destination}}
+                      </v-flex>
+                      <v-flex font-weight-bold v-else>
+                        {{result.dcode}}
                       </v-flex>
                       <v-flex>
                         {{momenty(result.arrival)}}
                       </v-flex>
                     </v-layout>
                   </v-flex>
-                  <v-flex xs2 pt-3 pl-4 title font-weight-bold>
+                  <v-flex xs2 pt-3 pl-4 title font-weight-bold v-if="!mobile">
                     <v-icon>access_time</v-icon> {{duration(result.departure,result.arrival)}}
                   </v-flex>
-                  <v-flex xs2 title pt-3 green--text>
+                  <v-flex xs2 title pt-3 green--text v-if="!mobile">
                     ₹ {{amount(result.price)}}
                   </v-flex>
-                  <v-flex xs2>
+                  <v-flex xs2 ml-2>
                     <v-btn v-model="bookBar" style="border-radius:4px" class="main white--text" @click="book(result.name, result.fcode, result.origin,result.destination,result.departure,result.arrival,result.price)">
                       BOOK
                     </v-btn>
@@ -221,6 +227,11 @@ export default {
       head: '',
       content: '',
       date: '2018-10-01',
+      mobile: false,
+      window: {
+        width: 0,
+        height: 0
+      },
       notFound: false,
       errorBar: false,
       bookBar: false,
@@ -238,7 +249,7 @@ export default {
       return moment(new Date()).format('YYYY-MM-DD')
     },
     alterTo () {
-      axios.post('/correspondingDestinations', {
+      axios.post('http://localhost:3000/correspondingDestinations', {
         origin: this.from.slice(0, -6)
       }).then((res) => {
         this.destinations = res.data
@@ -268,7 +279,7 @@ export default {
       if (this.from === '' || this.to === '' || this.date === '') {
         this.errorBar = true
       } else {
-        axios.post('/flights', {
+        axios.post('http://localhost:3000/flights', {
           origin: this.from.slice(0, -6),
           destination: this.to.slice(0, -6)
         }).then((res) => {
@@ -276,7 +287,7 @@ export default {
           if (res.data.length === 0) {
             this.notFound = true
           } else {
-          this.notFound = false
+            this.notFound = false
           }
         })
       }
@@ -285,10 +296,20 @@ export default {
       var temp = this.from
       this.from = this.to
       this.to = temp
+    },
+    handleResize () {
+      this.window.width = window.innerWidth
+      this.window.height = window.innerHeight
+      if (this.window.width < 500) {
+        this.mobile = true
+      }
     }
   },
   created () {
-    axios.get('/airports').then((res) => {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
+    window.removeEventListener('resize', this.handleResize)
+    axios.get('http://localhost:3000/airports').then((res) => {
       this.origins = res.data.origins.sort()
       this.destinations = res.data.destinations.sort()
     })
