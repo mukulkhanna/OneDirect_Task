@@ -3,8 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuetify from 'vuetify'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
+Vue.use(Vuetify, {
+  theme: {
+    main: '#7d5adf'
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
