@@ -29,6 +29,8 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
+app.use('/',express.static(__dirname + '/../client/dist'))
+
 app.post('/flights', (req,resp) => {
   // console.log(req.query.origin)
   // console.log(req.query.destination)
