@@ -10,6 +10,7 @@ var flights = require('./data').flights
 
 var DATABASE_URL = process.env.DBURL
 
+console.log(DATABASE_URL)
 const client = new Client({
   connectionString: DATABASE_URL,
   ssl: true
