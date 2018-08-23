@@ -1,7 +1,7 @@
 {
-  "name": "express-backend",
+  "name": "OneDirect_Task",
   "version": "1.0.0",
-  "description": "An express backend for a flight-booking application.",
+  "description": "A flight-search and booking application.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
