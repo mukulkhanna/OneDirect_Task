@@ -86,7 +86,6 @@
                   v-model="date"
                   type="date"
                   no-title
-                  
                   scrollable
                 >
                   <v-spacer></v-spacer>
@@ -114,7 +113,6 @@
               <!-- <v-icon right dark>search</v-icon> -->
             </v-btn>
           </v-layout>
-
 
           <v-layout v-if="results.length > 0" row align-end mt-4 class="text-xs-left">
             <v-flex style="position:relative">
@@ -237,13 +235,11 @@ export default {
   },
   methods: {
     aaj () {
-      console.log(moment(new Date()).format('YYYY-MM-DD'))
       return moment(new Date()).format('YYYY-MM-DD')
     },
     alterTo () {
-      console.log(this.from.slice(0,-6))
-      axios.post('/correspondingDestinations',{
-        origin: this.from.slice(0,-6)
+      axios.post('/correspondingDestinations', {
+        origin: this.from.slice(0, -6)
       }).then((res) => {
         this.destinations = res.data
       })
@@ -254,7 +250,6 @@ export default {
       this.bookBar = true
     },
     amount (price) {
-      console.log(this.number)
       if (this.number === 1) {
         return price
       } else {
@@ -273,18 +268,16 @@ export default {
       if (this.from === '' || this.to === '' || this.date === '') {
         this.errorBar = true
       } else {
-        console.log(this.from.slice(0,-6))
-        console.log(this.to.slice(0,-6))
         axios.post('/flights', {
-          origin: this.from.slice(0,-6),
-          destination: this.to.slice(0,-6)
+          origin: this.from.slice(0, -6),
+          destination: this.to.slice(0, -6)
         }).then((res) => {
           this.results = res.data
-          // if (res.data.length === 0) {
-          //   this.notFound = true
-          // } else {
-            // this.notFound = false
-          // }
+          if (res.data.length === 0) {
+            this.notFound = true
+          } else {
+          this.notFound = false
+          }
         })
       }
     },
@@ -296,7 +289,6 @@ export default {
   },
   created () {
     axios.get('/airports').then((res) => {
-      console.log(res.data)
       this.origins = res.data.origins.sort()
       this.destinations = res.data.destinations.sort()
     })
