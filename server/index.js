@@ -8,7 +8,6 @@ const { Client } = require('pg')
 
 var flights = require('./data').flights
 
-console.log(process.env.DATABASE_URL)
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -28,7 +27,9 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-app.use('/',express.static(__dirname + '/../client/dist'))
+console.log(__dirname)
+
+app.use('/',express.static(__dirname + '/../client/dist/index.html'))
 
 app.post('/flights', (req,resp) => {
   // console.log(req.query.origin)
