@@ -31,14 +31,10 @@ app.use(cors())
 app.use('/',express.static(__dirname + '/../client/dist/'))
 
 app.post('/flights', (req,resp) => {
-  // console.log(req.query.origin)
-  // console.log(req.query.destination)
   var getFlights = `SELECT * FROM flights where origin = '` + req.body.origin + `' and destination = '` + req.body.destination + `'`  
   client.query(getFlights, (err, res) => {
-    console.log(err,res.rows.length)
     resp.send(res.rows)
   })
-  console.log(req.body)
 })
 
 app.get('/airports', (req,resp) => {
@@ -48,14 +44,12 @@ app.get('/airports', (req,resp) => {
   var getDestinations = `SELECT DISTINCT destination, dcode FROM flights`
   
   client.query(getOrigins, (err,res) => {
-    console.log(res)
     res.rows.forEach((element)=>{
         origins.push(element.origin + ' (' + element.ocode + ')')
       })
     })
     
     client.query(getDestinations, (err,res) => {
-    console.log(res)
     res.rows.forEach((element)=>{
       destinations.push(element.destination + ' (' + element.dcode + ')')
     })
@@ -69,7 +63,6 @@ app.get('/airports', (req,resp) => {
     
 app.post('/correspondingDestinations', (req, resp) => {
   var getCorrespondingDestinations = `SELECT DISTINCT destination, dcode FROM flights where origin='` + req.body.origin + `'`
-  console.log(req.body.origin)
   client.query(getCorrespondingDestinations, (err, res) => {
     var temp = []
     res.rows.forEach((element) => {
