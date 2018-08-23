@@ -8,11 +8,9 @@ const { Client } = require('pg')
 
 var flights = require('./data').flights
 
-var DATABASE_URL = process.env.DBURL
-
-console.log(DATABASE_URL)
+console.log(process.env.DATABASE_URL)
 const client = new Client({
-  connectionString: DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: true
 })
 
