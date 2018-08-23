@@ -23,13 +23,12 @@ var setTimezone = "SET timezone = 'Asia/Kolkata'"
 
 
 const app = express()
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.use(bodyParser.json())
 app.use(cors())
 
-console.log(__dirname + '/../')
-
-app.use('/',express.static(__dirname + '/../client/dist/index.html'))
+app.use('/',express.static(__dirname + '/../client/dist/'))
 
 app.post('/flights', (req,resp) => {
   // console.log(req.query.origin)
