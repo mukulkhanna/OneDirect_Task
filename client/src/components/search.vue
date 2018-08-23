@@ -249,7 +249,7 @@ export default {
       return moment(new Date()).format('YYYY-MM-DD')
     },
     alterTo () {
-      axios.post('http://localhost:3000/correspondingDestinations', {
+      axios.post('/correspondingDestinations', {
         origin: this.from.slice(0, -6)
       }).then((res) => {
         this.destinations = res.data
@@ -279,7 +279,7 @@ export default {
       if (this.from === '' || this.to === '' || this.date === '') {
         this.errorBar = true
       } else {
-        axios.post('http://localhost:3000/flights', {
+        axios.post('/flights', {
           origin: this.from.slice(0, -6),
           destination: this.to.slice(0, -6)
         }).then((res) => {
@@ -309,7 +309,7 @@ export default {
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
     window.removeEventListener('resize', this.handleResize)
-    axios.get('http://localhost:3000/airports').then((res) => {
+    axios.get('/airports').then((res) => {
       this.origins = res.data.origins.sort()
       this.destinations = res.data.destinations.sort()
     })
