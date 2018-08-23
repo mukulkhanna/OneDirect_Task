@@ -170,7 +170,7 @@
                   <v-flex xs2 title pt-3 green--text v-if="!mobile">
                     ₹ {{amount(result.price)}}
                   </v-flex>
-                  <v-flex xs2 ml-2>
+                  <v-flex xs2 ml-1>
                     <v-btn v-model="bookBar" style="border-radius:4px" class="main white--text" @click="book(result.name, result.fcode, result.origin,result.destination,result.departure,result.arrival,result.price)">
                       BOOK
                     </v-btn>
