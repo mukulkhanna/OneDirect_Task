@@ -27,7 +27,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-console.log(__dirname)
+console.log(__dirname + '/../')
 
 app.use('/',express.static(__dirname + '/../client/dist/index.html'))
 
@@ -80,7 +80,7 @@ app.post('/correspondingDestinations', (req, resp) => {
   })
 })
 
-app.listen('3000', () => {
+listen(process.env.PORT || 3000, () => {
   console.log('Server started on port 3000!')
 })
     
